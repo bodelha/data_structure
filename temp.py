@@ -1,80 +1,50 @@
 import numpy as np
 
-class Deque:
-    def __init__ (self, capacidade):
-        self.capacidade = capacidade
-        self.inicio = -1
-        self.fim = 0
-        # self.numero_elementos = 0
-        self.valores = np.empty (self.capacidade, dtype=int)
+class Node:
+    def __init__ (self, valor):
+        self.valor = valor
+        self.next = None
+    
+    def mostra_no (self):
+        print (self.valor)
 
-    def __deque_cheio (self):
-        # return self.numero_elementos == self.capacidade
-        return (self.inicio == 0 and self.fim == self.capacidade -1) or self.inicio == self.fim + 1
+class LinkedList:
+    def __init__ (self):
+        self.head = None
 
+    def insere_inicio (self, valor):
+        new = Node (valor)
+        new.next = self.head
+        self.head = new
 
-    def __deque_vazio (self):
-        # return self.numero_elementos == 0
-        return self.inicio == -1
+    def mostrar (self):
+        atual = self.head
+        while atual:
+            atual.mostra_no()
+            atual = atual.next
 
-    def inserir_inicio (self, valor):
-        if self.deque_cheio():
-            print ('Cheio')
-            return
-        if self.inicio == -1:
-            self.inicio = 0
-            self.fim = 0
-        elif self.inicio == 0:
-            self.inicio = self.capacidade -1
+    def exclui_inicio (self):
+        temp = self.head
+        self.head = self.head.next 
+        if self.head:
+            return temp
         else:
-            self.inicio -= 1
-        self.valores [self.inicio] = valor
+            return self.head
 
-    def inserir_final (self, valor):
-        if self.deque_cheio():
-            print ('Cheio')
-            return
-        if self.inicio == -1:
-            self.inicio += 1
-            self.fim = 0
-        elif self.fim == self.capacidade - 1:
-            self.fim = 0
-        else:
-            self.fim += 1
-        self.valores [self.fim] = valor
-
-    def exlui_inicio(self):
-        if self.__deque_vazio():
-            print ("Vazio")
-            return
-        if self.inicio == self.fim:
-            self.inicio = -1
-            self.fim = 0
-        elif self.inicio != self.capacidade -1:
-            self.inicio += 1
-        else:
-            self.inicio = 0
-
-    def exclui_final (self):
-        if self.__deque_vazio():
-            print ("Vazio")
-            return
-        if self.inicio == self.fim:
-            self.inicio = -1
-            self.fim = 0
-        elif self.fim == 0:
-            self.fim == self.capacidade -1
-        else:
-            self.fim -= 1
-
-    def get_inicio (self):
-        if self.__deque_vazio():
-            print ("Vazio")
-            return
-        return self.valores[self.inicio]
-
-    def get_fim (self):
-        if self.__deque_vazio():
-            print ("Vazio")
-            return
-        return self.valores[self.fim]
+lista = LinkedList ()
+lista.insere_inicio(8)
+lista.insere_inicio(10)
+lista.insere_inicio(3)
+lista.mostrar()
+lista.insere_inicio(6)
+lista.mostrar()
+lista.insere_inicio(-7)
+lista.mostrar()
+lista.exclui_inicio()
+lista.mostrar()
+lista.exclui_inicio()
+lista.exclui_inicio()
+lista.exclui_inicio()
+lista.mostrar()
+lista.exclui_inicio()
+lista.mostrar()
