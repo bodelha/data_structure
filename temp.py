@@ -17,6 +17,8 @@ class DoublyLinkedList:
     def __init__ (self):
         self.head = None
         self.tail = None
+        self.__old = None
+        self.__new = None
     
     def __lista_vazia (self):
         if not self.head and not self.tail:
@@ -25,21 +27,23 @@ class DoublyLinkedList:
         return False
 
     def __adjust_left (self, new, old):
-        if old:
-            old.prev = new
-        new.next = old
+        self.__new, self.__old = new, old
+        if self.__old:
+            self.__old.prev = self.__new
+        self.__new.next = self.__old
     
     def __adjust_right (self, old, new):
-        if old:
-            old.next = new
-        new.prev = old
+        self.__old, self.__new = old, new
+        if self.__old:
+            self.__old.next = self.__new
+        self.__new.prev = self.__old
 
     def insere_inicio (self, valor):
         new = Node (valor)
         if self.__lista_vazia ():
             self.tail = new
         else:
-            self =  self.__adjust_left (new, self.head)
+            self.__adjust_left (new, self.head)
         self.head = new
 
     def insere_final (self, valor):
@@ -47,29 +51,35 @@ class DoublyLinkedList:
         if self.__lista_vazia ():
             self.head = new
         else:
-            self.__adjust_right (self.head, new)
+            self.__adjust_right (self.tail, new)
         self.tail = new
 
     def exclui_inicio (self):
-        if self.__lista_vazia():
+        if self.head == self.tail:
+            self.head = None
+            self.tail = None
             return
         self.__adjust_right (None, self.head.next)
         self.head = self.head.next
 
     def exclui_final (self):
-        if self.__lista_vazia:
+        if self.head == self.tail:
+            self.head = None
+            self.tail = None
             return
         self.__adjust_left (self.tail.prev, None)
         self.tail = self.tail.prev
 
     def exclui_valor (self, valor):
+        if self.__lista_vazia:
+            return
         if self.head.valor == valor:
             return exclui_inicio ()
         if self.tail.valor == valor:
             return exclui_final ()
         atual1 = self.head.next
         atual2 = self.tail.prev
-        while atual1.valor != valor or atual2.valor != valor:
+        while atual1.valor != valor and atual2.valor != valor:
             if atual1 == atual2 or atual1 == atual2.prev:
                 print ('Não está na lista')
                 return
@@ -94,9 +104,9 @@ lista.insere_final(7)
 lista.insere_final(-7)
 lista.insere_inicio(-2)
 lista.insere_final(6)
-lista.mostrar()
+# lista.mostrar()
 lista.exclui_inicio()
-lista.mostrar()
+# lista.mostrar()
 lista.exclui_final()
 lista.mostrar()
 lista.exclui_valor(9)
